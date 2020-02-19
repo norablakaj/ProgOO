@@ -7,7 +7,7 @@ public class Board {
 
     private Chip[][] board;
 
-    public Board(int rows, int columns){
+    public Board(int rows, int columns) {
 
         this.rows = rows;
         this.columns = columns;
@@ -15,25 +15,32 @@ public class Board {
         board = new Chip[rows][columns];
     }
 
-    public Chip[][] getBoard(){
+    public Chip[][] getBoard() {
 
         return board;
     }
 
-    //TODO
-    public boolean isValid(int placedRow, int placedColumn){
+    public boolean isValid(int placedRow, int placedColumn) {
 
+        if (placedColumn > columns || placedRow > rows || placedColumn < 0 || placedRow < 0
+                || placedRow != 0 && board[placedRow - 1][placedColumn] == null) {
 
-        return placedColumn <= columns && placedRow <= rows
-                && placedColumn > 0 && placedRow > 0
-                && board[placedRow][placedColumn] == null;
+            return false;
+        }
+
+        return board[placedRow][placedColumn] == null;
     }
 
-    public void setChip(int placedRow, int placedColumn, Chip chip){
+    public void setChip(int placedRow, int placedColumn, Chip chip) {
 
-        if(isValid(placedRow, placedColumn)){
+        if (isValid(placedRow, placedColumn)) {
 
             board[placedRow][placedColumn] = chip;
         }
+    }
+
+    //TODO
+    public boolean isWon(){
+        return true;
     }
 }
