@@ -1,5 +1,17 @@
 package lighthouse;
 
+import org.eclipse.jetty.util.ssl.SslContextFactory;
+import org.eclipse.jetty.websocket.api.RemoteEndpoint;
+import org.eclipse.jetty.websocket.api.Session;
+import org.eclipse.jetty.websocket.api.StatusCode;
+import org.eclipse.jetty.websocket.api.WriteCallback;
+import org.eclipse.jetty.websocket.api.annotations.*;
+import org.eclipse.jetty.websocket.client.ClientUpgradeRequest;
+import org.eclipse.jetty.websocket.client.WebSocketClient;
+import org.msgpack.core.*;
+import org.msgpack.value.Value;
+import org.msgpack.value.impl.ImmutableStringValueImpl;
+
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;

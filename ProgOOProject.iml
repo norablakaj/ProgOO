@@ -8,5 +8,13 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="acm-2.0" level="project" />
+    <orderEntry type="library" name="jetty-client-9.4.8.v20171121" level="project" />
+    <orderEntry type="library" name="jetty-http-9.4.8.v20171121" level="project" />
+    <orderEntry type="library" name="jetty-io-9.4.8.v20171121" level="project" />
+    <orderEntry type="library" name="jetty-util-9.4.8.v20171121" level="project" />
+    <orderEntry type="library" name="msgpack-core-0.8.14" level="project" />
+    <orderEntry type="library" name="websocket-api-9.4.8.v20171121" level="project" />
+    <orderEntry type="library" name="websocket-client-9.4.8.v20171121" level="project" />
+    <orderEntry type="library" name="websocket-common-9.4.8.v20171121" level="project" />
   </component>
 </module>
