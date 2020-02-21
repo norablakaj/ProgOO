@@ -8,16 +8,14 @@ public class Chip {
     /**
      * Chips always belong to a player.
      */
-    private final int player;
+    private final Player player;
 
     /**
      * Constructor for the chip.
      * @param player it belongs to.
      */
-    public Chip(int player){
+    public Chip(Player player){
 
-        // There should only be two players (can't be played otherwise)
-        assert(player == 1 || player == 0);
         this.player = player;
     }
 
@@ -25,7 +23,7 @@ public class Chip {
      * Getter.
      * @return the player.
      */
-    public int getPlayer(){
+    public Player getPlayer(){
         return player;
     }
 }
