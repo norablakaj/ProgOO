@@ -12,18 +12,20 @@ public class Chip {
 
     /**
      * Constructor for the chip.
+     *
      * @param player it belongs to.
      */
-    public Chip(Player player){
+    public Chip(Player player) {
 
         this.player = player;
     }
 
     /**
      * Getter.
+     *
      * @return the player.
      */
-    public Player getPlayer(){
+    public Player getPlayer() {
         return player;
     }
 }

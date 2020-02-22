@@ -202,4 +202,17 @@ public class Board {
 
         return null;
     }
+
+    public int getColumns() {
+        return columns;
+    }
+
+    public int getRows() {
+        return rows;
+    }
+
+    public Player getChipPlayer(int row, int column){
+
+        return board[row][column].getPlayer();
+    }
 }
