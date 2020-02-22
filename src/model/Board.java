@@ -101,7 +101,13 @@ public class Board {
 
         for (int column = 0; column < columns; column++) {
 
-            Player currentPlayer = board[0][column].getPlayer();
+            Player currentPlayer;
+            if (board[0][column] == null) {
+                currentPlayer = null;
+            } else {
+                currentPlayer = board[0][column].getPlayer();
+            }
+
             int counter = 0;
 
             for (int row = 0; row < rows; row++) {
@@ -135,9 +141,15 @@ public class Board {
 
     private Player isWonColumn() {
 
-        for (int row = 0; row < columns; row++) {
+        for (int row = 0; row < rows; row++) {
 
-            Player currentPlayer = board[row][0].getPlayer();
+            Player currentPlayer;
+            if (board[row][0] == null) {
+                currentPlayer = null;
+            } else {
+                currentPlayer = board[row][0].getPlayer();
+            }
+
             int counter = 0;
 
             for (int column = 0; column < rows; column++) {
@@ -211,8 +223,15 @@ public class Board {
         return rows;
     }
 
-    public Player getChipPlayer(int row, int column){
+    public Player getChipPlayer(int row, int column) {
 
-        return board[row][column].getPlayer();
+        // empty spot
+        if (board[row][column] == null) {
+            return null;
+        }
+        // player
+        else {
+            return board[row][column].getPlayer();
+        }
     }
 }

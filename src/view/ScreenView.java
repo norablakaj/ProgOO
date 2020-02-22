@@ -1,8 +1,11 @@
 package view;
 
+import acm.graphics.GOval;
 import acm.program.GraphicsProgram;
 import model.Board;
 import model.Player;
+
+import java.awt.*;
 
 /**
  * Screen view.
@@ -10,46 +13,76 @@ import model.Player;
  */
 public class ScreenView extends GraphicsProgram {
 
-    private static final int SCREEN_HEIGHT = 400;
-    private static final int SCREEN_WIDTH = 600;
+    private static final int SCREEN_HEIGHT = 600;
+    private static final int SCREEN_WIDTH = 700;
 
     public void drawBoard(Board board) {
 
         // drawing the background
         setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+        int screenWidth = getWidth();
+        int screenHeight = getHeight();
         drawBackground();
 
         // dimensions of the board
         int boardRows = board.getRows();
         int boardColumns = board.getColumns();
 
+        // dimension of the chip
+        double chipRadius = 0.8 * screenWidth / boardColumns;
+
         // drawing the chips
-        for (int row = 0; row < board.getRows(); row++) {
-            for (int column = 0; column < board.getColumns(); column++) {
+        for (int row = 0; row < boardRows; row++) {
+            for (int column = 0; column < boardColumns; column++) {
 
                 // player a chip belongs to
                 Player player = board.getChipPlayer(row, column);
 
-                drawChip(boardRows, boardColumns, row, column, player);
+                // position of the chip
+                int chipY = row * (SCREEN_HEIGHT-90) / boardRows + 10;
+                int chipX = column * SCREEN_WIDTH / boardColumns + 10;
+
+                drawChip(chipRadius, chipX, chipY, player);
             }
         }
     }
 
+    /**
+     * Drawing the board.
+     */
     private void drawBackground() {
 
         setBackground(ColorScheme.BOARD_COLOR);
+        setVisible(true);
     }
 
-    private void drawChip(int rows, int columns, int placedRow, int placedColumn, Player player) {
+    /**
+     * Drawing a chip.
+     * @param radius of the chip.
+     * @param chipX the chip is placed at.
+     * @param chipY the chip is placed at.
+     * @param player the chip belongs to or null if there is none.
+     */
+    private void drawChip(double radius, int chipX, int chipY, Player player) {
 
-        // dimensions of the chip
-        
+        Color chipColor;
 
         // empty spot
         if (player == null){
 
-
+            chipColor = ColorScheme.EMPTY_CHIP_COLOR;
         }
+        // player already set a chip at this spot
+        else {
+
+            chipColor = player.getColor();
+        }
+
+        GOval chipOval = new GOval(chipX, chipY, radius, radius);
+        chipOval.setColor(chipColor);
+        chipOval.setFilled(true);
+
+        add(chipOval);
     }
 
 }

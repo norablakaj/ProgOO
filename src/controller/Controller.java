@@ -67,6 +67,8 @@ public class Controller {
 
         while (isRunning){
 
+            screenView.drawBoard(board);
+
             // Checking, whether the game is still not won
             if (board.getWinner() != null){
 
