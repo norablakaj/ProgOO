@@ -46,7 +46,7 @@ public class Board {
      * @param placedColumn determine the position of the chip.
      * @return Is this move valid?
      */
-    public boolean isValid(int placedRow, int placedColumn) {
+    private boolean isValid(int placedRow, int placedColumn) {
 
         if (placedColumn > columns || placedRow > rows || placedColumn < 0 || placedRow < 0
                 || placedRow != 0 && board[placedRow - 1][placedColumn] == null) {
@@ -57,18 +57,29 @@ public class Board {
         return board[placedRow][placedColumn] == null;
     }
 
+    private int firstEmptyRow(int testColumn) {
+
+        for (int testRow = rows - 1; testRow >= 0; testRow--) {
+            if (isValid(testRow, testColumn)) {
+                return testRow;
+            }
+        }
+
+        return -1;
+    }
+
     /**
      * Sets a chip at [placedRow, placedColumn].
      *
-     * @param placedRow    for the position.
      * @param placedColumn for the position.
      * @param chip         to be placed.
      * @return if the chip was actually placed.
      */
-    public boolean setChip(int placedRow, int placedColumn, Chip chip) {
+    public boolean setChip(int placedColumn, Chip chip) {
 
-        if (isValid(placedRow, placedColumn)) {
+        int placedRow = firstEmptyRow(placedColumn);
 
+        if (placedRow != -1) {
             board[placedRow][placedColumn] = chip;
             return true;
         }
@@ -146,6 +157,7 @@ public class Board {
             Player currentPlayer;
             if (board[row][0] == null) {
                 currentPlayer = null;
+                continue;
             } else {
                 currentPlayer = board[row][0].getPlayer();
             }
@@ -196,12 +208,16 @@ public class Board {
 
                 Player currentPlayer = board[row][column].getPlayer();
 
+                if (currentPlayer == null) {
+                    continue;
+                }
+
                 for (int diagonal = 0; diagonal < 4; diagonal++) {
 
-                    if (!currentPlayer.equals(board[row + diagonal][column + diagonal].getPlayer())) {
+                    if (!currentPlayer.equals(getChipPlayer(row + diagonal, column + diagonal))) {
                         isLineUp = false;
                     }
-                    if (!currentPlayer.equals(board[row + 3 - diagonal][column + diagonal].getPlayer())) {
+                    if (!currentPlayer.equals(getChipPlayer(row + 3 - diagonal, column + diagonal))) {
                         isLineDown = false;
                     }
                 }

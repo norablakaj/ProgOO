@@ -1,20 +1,18 @@
 package controller;
 
 import model.Board;
+import model.Chip;
 import model.Direction;
 import model.Player;
 import view.ColorScheme;
 import view.LighthouseView;
 import view.ScreenView;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-
 /**
- *  Controller.
- *  Managing the game loop and the setup.
+ * Controller.
+ * Managing the game loop and the setup.
  */
-public class Controller implements KeyListener {
+public class Controller implements Runnable{
 
     /**
      * board size.
@@ -41,6 +39,13 @@ public class Controller implements KeyListener {
 
     private Direction direction;
 
+
+    /**
+     * Current game state.
+     */
+    private boolean player1turn = false;
+    private int playerColumn = 0;
+
     /**
      * Constructor.
      * Holds most of the setup.
@@ -57,32 +62,25 @@ public class Controller implements KeyListener {
         screenView = new ScreenView();
         lighthouseView = new LighthouseView();
 
+        KeyboardInput keyboardInput = new KeyboardInput(this);
+        screenView.addKeyListener(keyboardInput);
         loop();
-    }
-
-    public void setup(){
-
     }
 
     /**
      * game loop.
      */
-    public void loop(){
+    public void loop() {
 
         boolean isRunning = true;
-        boolean player1turn = false;
 
-        while (isRunning){
+        while (isRunning) {
 
             screenView.drawBoard(board);
-            lighthouseView.connect();
-
-            if (player1turn){
-
-            }
+            lighthouseView.drawBoard(board);
 
             // Checking, whether the game is still not won
-            if (board.getWinner() != null){
+            if (board.getWinner() != null) {
 
                 isRunning = false;
             }
@@ -91,39 +89,48 @@ public class Controller implements KeyListener {
             // (lower the frame rate)
             try {
                 Thread.sleep(100);
-            } catch (InterruptedException e){
+            } catch (InterruptedException e) {
                 e.printStackTrace();
             }
 
         }
     }
 
-    private int getPlayerRow(KeyEvent keyEvent){
+    public void placeChip() {
 
-        int row = 0;
+        Chip chip;
 
-        if (direction.getDirection(keyEvent) == Direction.RIGHT){
-            row = (row + 1) % ROWS;
+        if (player1turn) {
+            chip = new Chip(player1);
+        } else {
+            chip = new Chip(player0);
         }
-        if (direction.getDirection(keyEvent) == Direction.LEFT){
-            row = (row + 1) % ROWS;
+
+        boolean placingSuccessful = board.setChip(playerColumn, chip);
+
+        if(placingSuccessful){
+            playerColumn = 0;
+            player1turn = !player1turn;
+        } else {
+            System.out.println("Nope, falsche Spalte, Boomer");
         }
 
-        return row;
+    }
+
+    public void moveRight() {
+
+        playerColumn = (playerColumn + 1) % COLUMNS;
+        System.out.println("Move to the right.");
+    }
+
+    public void moveLeft() {
+
+        playerColumn = (playerColumn - 1 + COLUMNS) % COLUMNS;
+        System.out.println("Move to the left.");
     }
 
     @Override
-    public void keyTyped(KeyEvent keyEvent) {
-
-    }
-
-    @Override
-    public void keyPressed(KeyEvent keyEvent) {
-
-    }
-
-    @Override
-    public void keyReleased(KeyEvent keyEvent) {
+    public void run() {
 
     }
 }

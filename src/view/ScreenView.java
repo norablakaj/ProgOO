@@ -1,6 +1,7 @@
 package view;
 
 import acm.graphics.GOval;
+import acm.graphics.GPolygon;
 import acm.program.GraphicsProgram;
 import model.Board;
 import model.Player;
@@ -13,7 +14,7 @@ import java.awt.*;
  */
 public class ScreenView extends GraphicsProgram {
 
-    private static final int SCREEN_HEIGHT = 600;
+    private static final int SCREEN_HEIGHT = 650;
     private static final int SCREEN_WIDTH = 700;
 
     public void drawBoard(Board board) {
@@ -39,7 +40,7 @@ public class ScreenView extends GraphicsProgram {
                 Player player = board.getChipPlayer(row, column);
 
                 // position of the chip
-                int chipY = row * (SCREEN_HEIGHT-90) / boardRows + 10;
+                int chipY = row * (SCREEN_HEIGHT - 140) / boardRows + 60;
                 int chipX = column * SCREEN_WIDTH / boardColumns + 10;
 
                 drawChip(chipRadius, chipX, chipY, player);
@@ -83,6 +84,11 @@ public class ScreenView extends GraphicsProgram {
         chipOval.setFilled(true);
 
         add(chipOval);
+    }
+
+    public void drawIndicator(int column){
+
+        GPolygon gPolygon = new GPolygon();
     }
 
 }
