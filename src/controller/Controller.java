@@ -1,16 +1,20 @@
 package controller;
 
 import model.Board;
+import model.Direction;
 import model.Player;
 import view.ColorScheme;
 import view.LighthouseView;
 import view.ScreenView;
 
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
 /**
  *  Controller.
  *  Managing the game loop and the setup.
  */
-public class Controller {
+public class Controller implements KeyListener {
 
     /**
      * board size.
@@ -34,6 +38,8 @@ public class Controller {
      */
     private ScreenView screenView;
     private LighthouseView lighthouseView;
+
+    private Direction direction;
 
     /**
      * Constructor.
@@ -64,10 +70,16 @@ public class Controller {
     public void loop(){
 
         boolean isRunning = true;
+        boolean player1turn = false;
 
         while (isRunning){
 
             screenView.drawBoard(board);
+            lighthouseView.connect();
+
+            if (player1turn){
+
+            }
 
             // Checking, whether the game is still not won
             if (board.getWinner() != null){
@@ -84,5 +96,34 @@ public class Controller {
             }
 
         }
+    }
+
+    private int getPlayerRow(KeyEvent keyEvent){
+
+        int row = 0;
+
+        if (direction.getDirection(keyEvent) == Direction.RIGHT){
+            row = (row + 1) % ROWS;
+        }
+        if (direction.getDirection(keyEvent) == Direction.LEFT){
+            row = (row + 1) % ROWS;
+        }
+
+        return row;
+    }
+
+    @Override
+    public void keyTyped(KeyEvent keyEvent) {
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent keyEvent) {
+
+    }
+
+    @Override
+    public void keyReleased(KeyEvent keyEvent) {
+
     }
 }
