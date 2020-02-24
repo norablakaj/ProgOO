@@ -79,10 +79,20 @@ public class Controller implements Runnable{
             screenView.drawBoard(board);
             lighthouseView.drawBoard(board);
 
-            // Checking, whether the game is still not won
+            // Checking, if the game is still not won
             if (board.getWinner() != null) {
 
                 isRunning = false;
+
+                // Announcing the winner
+                // ! Switching the players !
+                Player winner;
+                if (player1turn){
+                    winner = player0;
+                } else {
+                    winner = player1;
+                }
+                System.out.println("Spieler " + winner.getName() + " hat gewonnen.");
             }
 
             // Waiting some time until the board is drawn again
@@ -112,7 +122,7 @@ public class Controller implements Runnable{
             playerColumn = 0;
             player1turn = !player1turn;
         } else {
-            System.out.println("Nope, falsche Spalte, Boomer");
+            System.err.println("Spalte ist bereits voll.");
         }
 
     }

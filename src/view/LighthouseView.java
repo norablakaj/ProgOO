@@ -2,6 +2,7 @@ package view;
 
 import lighthouse.LighthouseDisplay;
 import model.Board;
+import model.Player;
 
 import java.awt.*;
 import java.io.IOException;
@@ -49,8 +50,8 @@ public class LighthouseView {
             // send(...) method.
             byte[] data = new byte[HOCHHAUS_X * HOCHHAUS_Y * 3];
 
-            for (int i = 0; i < HOCHHAUS_X; i++){
-                for(int j = 0; j < HOCHHAUS_Y; j++){
+            for (int i = 0; i < HOCHHAUS_X; i++) {
+                for (int j = 0; j < HOCHHAUS_Y; j++) {
 
                     int pos = (j * HOCHHAUS_X + i) * 3;
 
@@ -65,7 +66,7 @@ public class LighthouseView {
                     }
                 }
             }
-            System.out.println(lighthouseDisplay.isConnected());
+            // System.out.println(lighthouseDisplay.isConnected());
             lighthouseDisplay.sendImage(data);
 
         } catch (IOException e) {
@@ -74,8 +75,68 @@ public class LighthouseView {
         }
     }
 
-    public void drawBoard(Board board){
-        pixels[6][9] = Color.PINK;
+    public void drawBoard(Board board) {
+
+        // Example to test the view
+        //pixels[6][7] = Color.PINK;
+
+        //dimensions of the board
+        int rows = board.getRows();
+        int columns = board.getColumns();
+
+        // drawing the chips
+        for (int row = 0; row < rows; row++){
+            for (int column = 0; column <columns; column++){
+
+                Player player = board.getChipPlayer(row, column);
+
+                drawChip(player, row, column, board);
+            }
+        }
         sendData();
+    }
+
+    /**
+     * Draws chips
+     *
+     * @param player     who owns the chip.
+     * @param chipRow    the chip is placed at.
+     * @param chipColumn the chip is placed at.
+     * @param board
+     */
+    public void drawChip(Player player, int chipRow, int chipColumn, Board board) {
+
+        Color chipColor;
+
+        if (player == null) {
+            chipColor = ColorScheme.EMPTY_CHIP_COLOR;
+        } else {
+            chipColor = player.getColor();
+        }
+
+        // borders for the game
+        int rowBorder = board.getRows() + 1;
+        int columnBorders = board.getColumns() + 1;
+
+        // test value
+        int indicatorHeight = 1;
+
+        // dimensions of the chip without the borders and indicator
+        int chipWidth = (HOCHHAUS_X - columnBorders) / board.getColumns();
+        int chipHeight = (HOCHHAUS_Y - rowBorder - indicatorHeight) / board.getRows();
+
+        // skipping windows of the same color and borders
+        for (int cRow = 1; cRow < HOCHHAUS_Y; cRow += chipWidth + 1) {
+            for (int cColumn = 1; cColumn < HOCHHAUS_X; cColumn += chipHeight + 1) {
+
+                for (int i = chipRow; i < chipWidth; i++) {
+                    for (int j = chipColumn; j < chipHeight; j++) {
+                        pixels[i][j] = chipColor;
+                        System.out.println(chipColor);
+                    }
+                }
+
+            }
+        }
     }
 }

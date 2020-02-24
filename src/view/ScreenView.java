@@ -86,9 +86,12 @@ public class ScreenView extends GraphicsProgram {
         add(chipOval);
     }
 
-    public void drawIndicator(int column){
+    public void drawIndicator(int column, int totalColumns){
 
-        GPolygon gPolygon = new GPolygon();
+        int polygonX = column * SCREEN_WIDTH / totalColumns;
+        int polygonY = 10;
+
+        GPolygon gPolygon = new GPolygon(polygonX, polygonY);
     }
 
 }

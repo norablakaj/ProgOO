@@ -49,7 +49,7 @@ public class Board {
     private boolean isValid(int placedRow, int placedColumn) {
 
         if (placedColumn > columns || placedRow > rows || placedColumn < 0 || placedRow < 0
-                || placedRow != 0 && board[placedRow - 1][placedColumn] == null) {
+                || placedRow != rows - 1 && board[placedRow + 1][placedColumn] == null) {
 
             return false;
         }
@@ -115,6 +115,7 @@ public class Board {
             Player currentPlayer;
             if (board[0][column] == null) {
                 currentPlayer = null;
+                continue;
             } else {
                 currentPlayer = board[0][column].getPlayer();
             }
