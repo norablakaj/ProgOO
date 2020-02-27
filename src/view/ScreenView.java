@@ -1,11 +1,14 @@
 package view;
 
+import acm.graphics.GLabel;
 import acm.graphics.GOval;
 import acm.graphics.GPolygon;
+import acm.graphics.GRect;
 import acm.program.GraphicsProgram;
 import model.Board;
 import model.Player;
 
+import javax.swing.*;
 import java.awt.*;
 
 /**
@@ -92,6 +95,28 @@ public class ScreenView extends GraphicsProgram {
         int polygonY = 10;
 
         GPolygon gPolygon = new GPolygon(polygonX, polygonY);
+    }
+
+    public void showWinner(Player winner) {
+
+        JFrame parent = new JFrame();
+
+        if(winner == null){
+            JOptionPane.showMessageDialog(parent, "Nobody has won.");
+        } else {
+            JOptionPane.showMessageDialog(parent, "The winner is " + winner.getName());
+        }
+            /*
+        GRect gRect = new GRect(SCREEN_WIDTH, SCREEN_HEIGHT);
+        gRect.setFillColor(ColorScheme.BOARD_COLOR);
+        gRect.setFilled(true);
+        add(gRect);
+
+        GLabel gLabel = new GLabel("The winner is " + winner.getName(), SCREEN_WIDTH / 4.0, SCREEN_HEIGHT / 2.0);
+        gLabel.setColor(ColorScheme.WINNER_COLOR);
+        gLabel.setFont(new Font("Serif", Font.BOLD, 40));
+        add(gLabel);
+             */
     }
 
 }

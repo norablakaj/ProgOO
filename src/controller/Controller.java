@@ -80,22 +80,29 @@ public class Controller implements Runnable{
             lighthouseView.drawBoard(board);
 
             // Checking, if the game is still not won
-            if (board.getWinner() != null) {
+            if (board.getWinner() != null || !board.winnerPossible()) {
 
                 isRunning = false;
 
-                // Announcing the winner
-                // ! Switching the players !
-                Player winner = player1turn
-                        ? player0
-                        : player1;
-                System.out.println("Spieler " + winner.getName() + " hat gewonnen.");
+                if (!board.winnerPossible()){
+                    // Nobody has won
+                    screenView.showWinner(null);
+                } else {
+                    // Announcing the winner
+                    // ! Switching the players !
+                    Player winner = player1turn
+                            ? player0
+                            : player1;
+                    screenView.showWinner(winner);
+                    //lighthouseView.showWinner(winner);
+                    System.out.println("Spieler " + winner.getName() + " hat gewonnen.");
+                }
             }
 
             // Waiting some time until the board is drawn again
             // (lower the frame rate)
             try {
-                Thread.sleep(100);
+                Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

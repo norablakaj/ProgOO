@@ -1,23 +1,12 @@
 package lighthouse;
 
-import org.eclipse.jetty.util.ssl.SslContextFactory;
-import org.eclipse.jetty.websocket.api.RemoteEndpoint;
-import org.eclipse.jetty.websocket.api.Session;
-import org.eclipse.jetty.websocket.api.StatusCode;
-import org.eclipse.jetty.websocket.api.WriteCallback;
-import org.eclipse.jetty.websocket.api.annotations.*;
-import org.eclipse.jetty.websocket.client.ClientUpgradeRequest;
-import org.eclipse.jetty.websocket.client.WebSocketClient;
-import org.msgpack.core.*;
-import org.msgpack.value.Value;
-import org.msgpack.value.impl.ImmutableStringValueImpl;
-
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +14,25 @@ import java.util.Set;
 
 import javax.management.InvalidAttributeValueException;
 
+import org.eclipse.jetty.util.ssl.SslContextFactory;
+import org.eclipse.jetty.websocket.api.RemoteEndpoint;
+import org.eclipse.jetty.websocket.api.Session;
+import org.eclipse.jetty.websocket.api.StatusCode;
+import org.eclipse.jetty.websocket.api.WriteCallback;
+import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
+import org.eclipse.jetty.websocket.api.annotations.OnWebSocketConnect;
+import org.eclipse.jetty.websocket.api.annotations.OnWebSocketError;
+import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
+import org.eclipse.jetty.websocket.api.annotations.WebSocket;
+import org.eclipse.jetty.websocket.client.ClientUpgradeRequest;
+import org.eclipse.jetty.websocket.client.WebSocketClient;
+import org.msgpack.core.MessageBufferPacker;
+import org.msgpack.core.MessagePack;
+import org.msgpack.core.MessageStringCodingException;
+import org.msgpack.core.MessageTypeCastException;
+import org.msgpack.core.MessageUnpacker;
+import org.msgpack.value.Value;
+import org.msgpack.value.impl.ImmutableStringValueImpl;
 
 /**
  * This class wraps the network communication with the lighthouse in a simple
@@ -284,7 +292,7 @@ public class LighthouseDisplay {
         private boolean connected = false;
         private int debug;
         private RemoteEndpoint endpoint = null;
-        private ByteBuffer lastPacket;
+        private byte[] lastPacket;
         private Object sendSynchronizer = new Object();
         private boolean dataSentSinceLastCheck = false;
         private boolean keyDataRequested = false;
@@ -352,18 +360,11 @@ public class LighthouseDisplay {
             }
 
             dataSentSinceLastCheck = true;
-            lastPacket = ByteBuffer.wrap(packer.toByteArray());
+            lastPacket = packer.toByteArray();
 
             synchronized (sendSynchronizer) {
                 if (connected) {
-                    endpoint.sendBytes(ByteBuffer.wrap(packer.toByteArray()), new WriteCallback() {
-                        @Override
-                        public void writeSuccess() {}
-                        @Override
-                        public void writeFailed(Throwable err) {
-                            System.err.println("LighthouseDisplay, ERROR: sending image failed");
-                        }
-                    });
+                    endpoint.sendBytes(ByteBuffer.wrap(Arrays.copyOf(lastPacket, lastPacket.length)));
                     endpoint.flush();
                 }
             }
@@ -475,8 +476,7 @@ public class LighthouseDisplay {
                                 // check again just in case it changed
                                 if (!dataSentSinceLastCheck) {
                                     try {
-                                        RemoteEndpoint endpoint = session.getRemote();
-                                        endpoint.sendBytes(lastPacket);
+                                        endpoint.sendBytes(ByteBuffer.wrap(Arrays.copyOf(lastPacket, lastPacket.length)));
                                         endpoint.flush();
                                     } catch (IOException e) {
                                         e.printStackTrace();

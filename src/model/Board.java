@@ -108,21 +108,20 @@ public class Board {
         }
     }
 
-    private Player isWonRow() {
+    private Player isWonColumn() {
 
         for (int column = 0; column < columns; column++) {
 
             Player currentPlayer;
-            if (board[0][column] == null) {
-                currentPlayer = null;
+            if (board[rows - 1][column] == null) {
                 continue;
             } else {
-                currentPlayer = board[0][column].getPlayer();
+                currentPlayer = board[rows - 1][column].getPlayer();
             }
 
             int counter = 0;
 
-            for (int row = 0; row < rows; row++) {
+            for (int row = rows - 1; row >= 0; row--) {
 
                 if (board[row][column] != null) {
 
@@ -151,13 +150,13 @@ public class Board {
         return null;
     }
 
-    private Player isWonColumn() {
+    private Player isWonRow() {
 
-        for (int row = 0; row < rows; row++) {
+        for (int row = rows - 1; row >= 0; row--) {
 
             Player currentPlayer;
+
             if (board[row][0] == null) {
-                currentPlayer = null;
                 continue;
             } else {
                 currentPlayer = board[row][0].getPlayer();
@@ -165,7 +164,7 @@ public class Board {
 
             int counter = 0;
 
-            for (int column = 0; column < rows; column++) {
+            for (int column = 0; column < columns; column++) {
 
                 if (board[row][column] != null) {
 
@@ -197,7 +196,7 @@ public class Board {
     private Player isWonDiagonal() {
 
         // look at every spot
-        for (int row = 0; row < rows - 3; row++) {
+        for (int row = rows - 1; row >= 3; row--) {
             for (int column = 0; column < columns - 3; column++) {
 
                 if (board[row][column] == null) {
@@ -205,6 +204,33 @@ public class Board {
                 }
                 // there is no empty spot or other chip yet
                 boolean isLineUp = true;
+
+                Player currentPlayer = board[row][column].getPlayer();
+
+                if (currentPlayer == null) {
+                    continue;
+                }
+
+                for (int diagonal = 0; diagonal < 4; diagonal++) {
+
+                    if (!currentPlayer.equals(getChipPlayer(row - diagonal, column + diagonal))) {
+                        isLineUp = false;
+                    }
+                }
+
+                if (isLineUp) {
+                    return currentPlayer;
+                }
+            }
+        }
+
+        for (int row = rows - 4; row >= 0; row--) {
+            for (int column = 0; column < columns - 3; column++) {
+
+                if (board[row][column] == null) {
+                    continue;
+                }
+                // there is no empty spot or other chip yet
                 boolean isLineDown = true;
 
                 Player currentPlayer = board[row][column].getPlayer();
@@ -216,14 +242,11 @@ public class Board {
                 for (int diagonal = 0; diagonal < 4; diagonal++) {
 
                     if (!currentPlayer.equals(getChipPlayer(row + diagonal, column + diagonal))) {
-                        isLineUp = false;
-                    }
-                    if (!currentPlayer.equals(getChipPlayer(row + 3 - diagonal, column + diagonal))) {
                         isLineDown = false;
                     }
                 }
 
-                if (isLineUp || isLineDown) {
+                if (isLineDown) {
                     return currentPlayer;
                 }
             }
@@ -231,6 +254,7 @@ public class Board {
 
         return null;
     }
+
 
     public int getColumns() {
         return columns;
@@ -251,4 +275,17 @@ public class Board {
             return board[row][column].getPlayer();
         }
     }
+
+    public boolean winnerPossible(){
+
+        for (int i = 0; i < columns; i++){
+            if(isValid(rows - 1, i)){
+                return true;
+            }
+        }
+        return false;
+
+    }
 }
+
+
