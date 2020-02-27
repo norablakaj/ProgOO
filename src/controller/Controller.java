@@ -86,12 +86,9 @@ public class Controller implements Runnable{
 
                 // Announcing the winner
                 // ! Switching the players !
-                Player winner;
-                if (player1turn){
-                    winner = player0;
-                } else {
-                    winner = player1;
-                }
+                Player winner = player1turn
+                        ? player0
+                        : player1;
                 System.out.println("Spieler " + winner.getName() + " hat gewonnen.");
             }
 
@@ -102,7 +99,6 @@ public class Controller implements Runnable{
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-
         }
     }
 
