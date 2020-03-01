@@ -12,7 +12,7 @@ import view.ScreenView;
  * Controller.
  * Managing the game loop and the setup.
  */
-public class Controller implements Runnable{
+public class Controller{
 
     /**
      * board size.
@@ -59,9 +59,11 @@ public class Controller implements Runnable{
         //Initialising the board
         board = new Board(ROWS, COLUMNS);
 
+        // views
         screenView = new ScreenView();
         lighthouseView = new LighthouseView();
 
+        // keyboard listener
         KeyboardInput keyboardInput = new KeyboardInput(this);
         screenView.addKeyListener(keyboardInput);
         loop();
@@ -72,10 +74,12 @@ public class Controller implements Runnable{
      */
     public void loop() {
 
+        // checking if the game is still running
         boolean isRunning = true;
 
         while (isRunning) {
 
+            // drawing the board on the screen + the lighthouse
             screenView.drawBoard(board);
             lighthouseView.drawBoard(board);
 
@@ -109,6 +113,9 @@ public class Controller implements Runnable{
         }
     }
 
+    /**
+     * Places a chip each turn.
+     */
     public void placeChip() {
 
         Chip chip;
@@ -130,20 +137,21 @@ public class Controller implements Runnable{
 
     }
 
+    /**
+     * Selection of the column.
+     */
     public void moveRight() {
 
         playerColumn = (playerColumn + 1) % COLUMNS;
         System.out.println("Move to the right.");
     }
 
+    /**
+     * Selection of the column.
+     */
     public void moveLeft() {
 
         playerColumn = (playerColumn - 1 + COLUMNS) % COLUMNS;
         System.out.println("Move to the left.");
-    }
-
-    @Override
-    public void run() {
-
     }
 }

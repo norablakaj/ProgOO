@@ -1,9 +1,6 @@
 package view;
 
-import acm.graphics.GLabel;
 import acm.graphics.GOval;
-import acm.graphics.GPolygon;
-import acm.graphics.GRect;
 import acm.program.GraphicsProgram;
 import model.Board;
 import model.Player;
@@ -17,9 +14,16 @@ import java.awt.*;
  */
 public class ScreenView extends GraphicsProgram {
 
+    /**
+     * Dimensions of the screen.
+     */
     private static final int SCREEN_HEIGHT = 650;
     private static final int SCREEN_WIDTH = 700;
 
+    /**
+     * Draws the board into the screen.
+     * @param board to be drawn.
+     */
     public void drawBoard(Board board) {
 
         // drawing the background
@@ -89,14 +93,10 @@ public class ScreenView extends GraphicsProgram {
         add(chipOval);
     }
 
-    public void drawIndicator(int column, int totalColumns){
-
-        int polygonX = column * SCREEN_WIDTH / totalColumns;
-        int polygonY = 10;
-
-        GPolygon gPolygon = new GPolygon(polygonX, polygonY);
-    }
-
+    /**
+     * JFrame popping up whenever a game ended.
+     * @param winner which is shown on screen (if winner == null, it says, that the game ended).
+     */
     public void showWinner(Player winner) {
 
         JFrame parent = new JFrame();
@@ -106,17 +106,6 @@ public class ScreenView extends GraphicsProgram {
         } else {
             JOptionPane.showMessageDialog(parent, "The winner is " + winner.getName());
         }
-            /*
-        GRect gRect = new GRect(SCREEN_WIDTH, SCREEN_HEIGHT);
-        gRect.setFillColor(ColorScheme.BOARD_COLOR);
-        gRect.setFilled(true);
-        add(gRect);
-
-        GLabel gLabel = new GLabel("The winner is " + winner.getName(), SCREEN_WIDTH / 4.0, SCREEN_HEIGHT / 2.0);
-        gLabel.setColor(ColorScheme.WINNER_COLOR);
-        gLabel.setFont(new Font("Serif", Font.BOLD, 40));
-        add(gLabel);
-             */
     }
 
 }

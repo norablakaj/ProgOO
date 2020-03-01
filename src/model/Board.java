@@ -57,14 +57,21 @@ public class Board {
         return board[placedRow][placedColumn] == null;
     }
 
+    /**
+     * Finds the first empty row, a chip can be placed at.
+     * @param testColumn is the selected column.
+     * @return which row is empty and valid or -1 if there is none.
+     */
     private int firstEmptyRow(int testColumn) {
 
+        // checking all rows from the bottom up
         for (int testRow = rows - 1; testRow >= 0; testRow--) {
             if (isValid(testRow, testColumn)) {
                 return testRow;
             }
         }
 
+        // no empty row was found
         return -1;
     }
 
@@ -108,6 +115,11 @@ public class Board {
         }
     }
 
+    /**
+     * Helper for getWinner().
+     * Just checks the columns.
+     * @return the winner.
+     */
     private Player isWonColumn() {
 
         for (int column = 0; column < columns; column++) {
@@ -150,6 +162,11 @@ public class Board {
         return null;
     }
 
+    /**
+     * Helper for getWinner().
+     * Just checks the rows.
+     * @return the winner.
+     */
     private Player isWonRow() {
 
         for (int row = rows - 1; row >= 0; row--) {
@@ -193,6 +210,11 @@ public class Board {
         return null;
     }
 
+    /**
+     * Helper for getWinner().
+     * Just checks the diagonals.
+     * @return the winner.
+     */
     private Player isWonDiagonal() {
 
         // look at every spot
@@ -256,14 +278,28 @@ public class Board {
     }
 
 
+    /**
+     * Getter.
+     * @return columns.
+     */
     public int getColumns() {
         return columns;
     }
 
+    /**
+     * Getter.
+     * @return rows.
+     */
     public int getRows() {
         return rows;
     }
 
+    /**
+     * Checks, which player placed a chip at a certain position.
+     * @param row ->.
+     * @param column the position the chip is placed at.
+     * @return the player the chip belongs to or null if there is none.
+     */
     public Player getChipPlayer(int row, int column) {
 
         // empty spot
@@ -276,9 +312,14 @@ public class Board {
         }
     }
 
+    /**
+     * Checks if a game can still be won.
+     * @return if this is possible.
+     */
     public boolean winnerPossible(){
 
         for (int i = 0; i < columns; i++){
+            // Is there an column left, that is not filled?
             if(isValid(rows - 1, i)){
                 return true;
             }

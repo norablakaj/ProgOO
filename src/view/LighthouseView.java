@@ -7,23 +7,44 @@ import model.Player;
 import java.awt.*;
 import java.io.IOException;
 
+/**
+ * Manages the connection to the Lighthouse.
+ */
 public class LighthouseView {
 
+    /**
+     * Connection to the Lighthouse.
+     */
     private static final String USERNAME = "stu214328";
     private static final String TOKEN = "API-TOK_JLA/-wLIv-uelL-MMqm-Wie7";
 
+    /**
+     * Dimensions.
+     */
     private static final int HOCHHAUS_X = 14;
     private static final int HOCHHAUS_Y = 28;
 
+    /**
+     * Array representing the pixels of the Lighthouse (in order).
+     */
     private Color[][] pixels;
     private LighthouseDisplay lighthouseDisplay;
 
+    /**
+     * Constructor.
+     */
     public LighthouseView() {
 
         pixels = new Color[HOCHHAUS_X][HOCHHAUS_Y];
         lighthouseDisplay = getDisplay(USERNAME, TOKEN);
     }
 
+    /**
+     * iLearn.
+     * @param username ->.
+     * @param token for the connection.
+     * @return the current display.
+     */
     public LighthouseDisplay getDisplay(String username, String token) {
 
         LighthouseDisplay display = null;
@@ -40,9 +61,11 @@ public class LighthouseView {
         return display;
     }
 
+    /**
+     * Sends data to the display.
+     */
     public void sendData() {
 
-        // Send data to the display
         try {
             // This array contains for every window (14 rows, 28 columns) three
             // bytes that define the red, green, and blue component of the color
@@ -76,18 +99,13 @@ public class LighthouseView {
         }
     }
 
+    /**
+     * Draws the board onto the lighthouse.
+     * @param board which is drawn.
+     */
     public void drawBoard(Board board) {
 
-        // Example to test the view
-        //pixels[6][7] = Color.PINK;
-
-        // number of borders for the game
-        //int rowBorder = board.getRows() + 1;
-        //int columnBorders = board.getColumns() + 1;
-
-        // test value
-        //int indicatorHeight = 1;
-        // dimensions of the chip without the borders and indicator
+        // dimensions of the chip
         int chipWidth = HOCHHAUS_X / board.getColumns();
         int chipHeight = HOCHHAUS_Y / board.getRows();
 
@@ -111,8 +129,7 @@ public class LighthouseView {
     }
 
     /**
-     * Draws chips
-     *
+     * Draws chips.
      * @param player     who owns the chip.
      * @param chipRow    the chip is placed at.
      * @param chipColumn the chip is placed at.
